@@ -1,0 +1,720 @@
+<html class=" slfnqqbpqtr idc0_331">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title></title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="googlebot" content="noindex, nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/underscore@1.13.1/underscore-umd-min.js"></script>
+  <script type="text/javascript" src="https://code.jquery.com/jquery-1.9.1.js"></script>
+  <script type="text/javascript" src="https://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css">
+
+  <style id="compiled-css" type="text/css">
+    html,
+    body {
+      cursor: grab;
+    }
+
+    .ui-state-default,
+    .ui-state-hover {
+      background: #e6e6e6 url(images/ui-bg_glass_75_e6e6e6_1x400.png) 100% 10% repeat-x !important;
+      font-weight: normal;
+      color: #212121;
+    }
+
+    .ui-state-disabled {
+      opacity: 1 !important;
+    }
+
+    .gridlines {
+      display: none;
+      position: absolute;
+      background-color: #7c7c7c;
+    }
+
+    #circle {
+      width: 32px;
+      height: 32px;
+      position: absolute;
+      z-index: 99 !important;
+      -webkit-border-radius: 25px;
+      -moz-border-radius: 25px;
+      border-radius: 25px;
+      background: rgb(0, 184, 174);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+
+    .drag-item,
+    .outside-drag-item {
+      position: absolute;
+      background: red;
+      width: 64px;
+      height: 64px;
+      cursor: move;
+    }
+
+    .drop-target {
+      position: absolute;
+      left: 192px;
+      top: 128px;
+      width: 512px;
+      height: 512px;
+      border: dashed 1px orange;
+    }
+
+    .download-div {
+      position: absolute;
+      left: 0px;
+      top: 128px;
+      width: 64px;
+      height: 64px;
+      border: dashed 1px orange;
+      display: block;
+    }
+
+    .size-select-div {
+      position: absolute;
+      left: 64px;
+      top: 128px;
+      width: 128px;
+      height: 64px;
+      border: dashed 1px orange;
+    }
+
+    .floor-texture-div {
+      position: absolute;
+      left: 64px;
+      top: 192px;
+      width: 128px;
+      height: 64px;
+      border: dashed 1px orange;
+    }
+
+    .ceiling-texture-div {
+      position: absolute;
+      left: 64px;
+      top: 256px;
+      width: 128px;
+      height: 64px;
+      border: dashed 1px orange;
+    }
+
+    .player-position-div {
+      position: absolute;
+      left: 64px;
+      top: 320px;
+      width: 128px;
+      height: 64px;
+      border: dashed 1px orange;
+    }
+
+    .player-rotation-div {
+      position: absolute;
+      left: 64px;
+      top: 384px;
+      width: 128px;
+      height: 64px;
+      border: dashed 1px orange;
+    }
+
+    .paint-tool-div {
+      position: absolute;
+      left: 64px;
+      top: 448px;
+      width: 128px;
+      height: 64px;
+      border: dashed 1px orange;
+    }
+
+    .grid-snap-div {
+      position: absolute;
+      left: 64px;
+      top: 512px;
+      width: 128px;
+      height: 64px;
+      border: dashed 1px orange;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="sidebar">
+    <div class="download-div">
+      <form name="download-form">
+        <button id="download-btn" name="download-btn"
+          style="margin-left: 16px; width: 32px; margin-top: 3px; margin-bottom: 0px;">
+          <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+            x="0px" y="0px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
+            <g>
+              <g>
+                <path
+                  d="M472,313v139c0,11.028-8.972,20-20,20H60c-11.028,0-20-8.972-20-20V313H0v139c0,33.084,26.916,60,60,60h392    c33.084,0,60-26.916,60-60V313H472z" />
+              </g>
+            </g>
+            <g>
+              <g>
+                <polygon
+                  points="352,235.716 276,311.716 276,0 236,0 236,311.716 160,235.716 131.716,264 256,388.284 380.284,264   " />
+              </g>
+          </svg>
+        </button>
+      </form>
+      <form name="upload-form">
+        <input type="file" id="file-input" hidden accept="application/JSON" />
+        <button id="upload-btn" name="upload-btn" style="margin-left: 16px; width: 32px; margin-top: -10px;">
+          <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+            x="0px" y="0px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
+            <g>
+              <g>
+                <path
+                  d="M472,312.642v139c0,11.028-8.972,20-20,20H60c-11.028,0-20-8.972-20-20v-139H0v139c0,33.084,26.916,60,60,60h392    c33.084,0,60-26.916,60-60v-139H472z" />
+              </g>
+            </g>
+            <g>
+              <g>
+                <polygon
+                  points="256,0.358 131.716,124.642 160,152.926 236,76.926 236,388.642 276,388.642 276,76.926 352,152.926     380.284,124.642   " />
+              </g>
+          </svg>
+        </button>
+      </form>
+    </div>
+    <div class="size-select-div">
+      <form name="size-select-form">
+        <label for="size-select">Map Size:</label>
+        <input type="number" id="size-select" name="size-select" min="1" max="100" style="width: 106px;">
+      </form>
+    </div>
+    <div class="floor-texture-div">
+      <label for="floor-texture">Floor Texture:</label>
+      <select name="floor-texture" id="floor-texture">
+      </select>
+    </div>
+    <div class="ceiling-texture-div">
+      <label for="ceiling-texture">Ceiling Texture:</label>
+      <select name="ceiling-texture" id="ceiling-texture">
+      </select>
+    </div>
+    <div class="player-position-div">
+      <form name="player-position-form">
+        <label for="player-position">Player (x,y):</label>
+        <input type="text" name="player-position" id="player-position" style="width: 106px;" />
+      </form>
+    </div>
+    <div class="player-rotation-div">
+      <form name="player-rotation-form">
+        <label for="player-rotation">Rotation (∠°):</label>
+        <input type="text" name="player-rotation" id="player-rotation" style="width: 106px;" />
+      </form>
+    </div>
+  </div>
+  <div class="paint-tool-div">
+    <label for="paint-tool">Paint Texture:</label>
+    <select name="paint-tool" id="paint-tool">
+      <option value="disabled" selected='selected'>Disabled</option>
+    </select>
+  </div>
+  <div class="grid-snap-div">
+    <label for="snap-toggle" style="font-size: 11;">Snap to Grid:</label>
+    <input type="checkbox" name="snap-toggle" id="snap-toggle" checked>
+    <br />
+    <label for="grid-align" style="font-size: 11;">Align to grid:</label>
+    <select name="grid-align" id="grid-align">
+      <option value="1">Disabled</option>
+      <option value="16">16</option>
+      <option value="32">32</option>
+      <option value="64" selected='selected'>64</option>
+    </select>
+  </div>
+  <div id="circle"><span style="color: black;">&uarr;</span></div>
+  <div class="drop-target"></div>
+
+  <div id="drag-items"></div>
+
+  <a id="downloadAnchorElem" style="display:none"></a>
+
+  <script type="text/javascript">
+    // https://usefulangle.com/post/193/javascript-read-local-file
+
+    let GRID_SIZE = 9;
+    let PLAYER_POSITION = [4.5, 4.5];
+    let PLAYER_ROTATION = 0;
+    let DIRECTION_X = -1;
+    let DIRECTION_Y = 0;
+    let PLANE_X = 0;
+    let PLANE_Y = 0.66;
+    let FLOOR_TEXTURE = 3;
+    let CEILING_TEXTURE = 7;
+
+    let textures = {
+      "eagle": 0,
+      "redbrick": 1,
+      "purplestone": 2,
+      "greystone": 3,
+      "bluestone": 4,
+      "mossy": 5,
+      "wood": 6,
+      "colorstone": 7,
+      "barrel": 8,
+      "pillar": 9,
+      "greenlight": 10
+    };
+    let sprites = [8, 9, 10];
+    let enemies = [
+      "mguard"
+    ];
+
+    String.prototype.capitalize = function () {
+      return this.charAt(0).toUpperCase() + this.slice(1);
+    }
+
+    let painted = [];
+    for (let y = 0; y < GRID_SIZE; y++) {
+      row = new Array(GRID_SIZE).fill(0);
+      painted[y] = row;
+    }
+    let paint_tool = 1;
+
+    let paint_enabled = false;
+    let mouse_down = false;
+
+    $('.drop-target').mousedown(function () {
+      mouse_down = true;
+    });
+
+    $(document).mouseup(function () {
+      mouse_down = false;
+    });
+
+    $('.drop-target').mousemove(event => {
+      if (window.getSelection) { window.getSelection().removeAllRanges(); }
+      else if (document.selection) { document.selection.empty(); }
+      if (paint_enabled == false) return;
+      if (mouse_down === false) return;
+      if (painted[Math.floor((event.pageY - 128) / 64)][Math.floor((event.pageX - 192) / 64)] == paint_tool + 1) return;
+      if (Math.floor((event.pageX - 192) / 64) < 0 || Math.floor((event.pageY - 128) / 64) < 0) return;
+      if (Math.floor((event.pageX - 192) / 64) > GRID_SIZE - 1 || Math.floor((event.pageY - 128) / 64) > GRID_SIZE - 1) return;
+
+      [...document.getElementsByClassName("drag-item ui-draggable")].filter(e => ![...e.classList].includes("outside-drag-item") && e.offsetLeft == Math.floor((event.pageX - 192) / 64) * 64 && e.offsetTop == Math.floor((event.pageY - 128) / 64) * 64).forEach(e => e.remove())
+      painted[Math.floor((event.pageY - 128) / 64)][Math.floor((event.pageX - 192) / 64)] = paint_tool + 1;
+      let element = $(`<div class="drag-item ui-draggable ${sprites.includes(paint_tool) ? "sprite" : ""}" rel="${Object.keys(textures).find(key => textures[key] === paint_tool)}" nonce="${Date.now()}" style="left: ${Math.floor((event.pageX - 192) / 64) * 64}px; top: ${Math.floor((event.pageY - 128) / 64) * 64}px;">
+      <img src="../textures/${Object.keys(textures).find(key => textures[key] === paint_tool)}.png" title="">
+    </div>`);
+      $(".drop-target:first").append(element);
+      makeDraggable(element);
+      element.draggable("disable");
+    });
+
+    let enemy_rotation = 0;
+
+    function zoom(event) {
+      event.preventDefault();
+
+      [...document.getElementsByClassName("drag-item ui-draggable")].filter(e => ![...e.classList].includes("outside-drag-item") && e.offsetLeft == Math.floor((event.clientX - 192) / 64) * 64 && e.offsetTop == Math.floor((event.clientY - 128) / 64) * 64).forEach(e => {
+
+        let enemy_rotation = Number(e.attributes.rot.value);
+        let enemy_angle = Number(e.attributes.ang.value);
+
+        if (event.deltaY < 0) {
+          enemy_rotation += 1;
+          enemy_angle += 45;
+        } else {
+          enemy_rotation -= 1;
+          enemy_angle -= 45;
+        }
+
+        if (enemy_rotation < 1) {
+          enemy_rotation += 8;
+        } else if (enemy_rotation >= 9) {
+          enemy_rotation -= 8;
+        }
+
+        while (enemy_angle < 0.0) {
+          enemy_angle += 360;
+        }
+        while (enemy_angle > 360.0) {
+          enemy_angle -= 360;
+        }
+
+        // enemy_rotation = enemy_rotation > 360 ? 0 : enemy_rotation;
+
+        console.log(enemy_rotation, event.clientX, event.clientY);
+        e.children[0].src = `../textures/enemies/${e.attributes.rel.value}/${e.attributes.rel.value}_s_${enemy_rotation}.png`;
+        e.attributes.rot.value = enemy_rotation;
+        e.attributes.ang.value = enemy_angle;
+      });
+
+    }
+
+    let scale = 1;
+    const el = document.getElementsByClassName("drop-target")[0]
+    el.onwheel = zoom;
+
+    function get_grid() {
+      grid = [];
+      for (let y = 0; y < GRID_SIZE; y++) {
+        let row = new Array(GRID_SIZE).fill(0);
+        let arr = _.sortBy([...document.getElementsByClassName("drag-item ui-draggable")].filter(e => ![...e.classList].includes("outside-drag-item")).filter(e => e.offsetTop == 64 * y && (![...e.classList].some(e => e == "sprite" || e == "enemy"))), "offsetLeft");
+        for (let i = 0; i < arr.length; i++) {
+          row[arr[i].offsetLeft / 64] = textures[arr[i].attributes["rel"].value] + 1;
+        }
+        grid[y] = row;
+      }
+
+      return grid;
+    }
+
+    function get_sprites() {
+      let arr = _.sortBy([...document.getElementsByClassName("drag-item ui-draggable sprite")].filter(e => ![...e.classList].includes("outside-drag-item")), "offsetLeft");
+      let sprite_grid = [];
+      arr.forEach(e => sprite_grid.push({ y: (e.offsetLeft / 64) + 0.5, x: (e.offsetTop / 64) + 0.5, texture: textures[e.attributes.rel.value] }))
+
+      return sprite_grid;
+    }
+
+    function get_enemies() {
+      let arr = _.sortBy([...document.getElementsByClassName("drag-item ui-draggable enemy")].filter(e => ![...e.classList].includes("outside-drag-item")), "offsetLeft");
+      let enemy_grid = [];
+      arr.forEach(e => enemy_grid.push({ y: (e.offsetLeft / 64) + 0.5, x: (e.offsetTop / 64) + 0.5, rotation: Number(e.attributes.ang.value), type: e.attributes.rel.value }))
+
+      return enemy_grid;
+    }
+
+    function makeDraggable(item) {
+      item.draggable({
+        snap: '.gridlines',
+        revert: function (e) {
+          if (e == false) {
+            this[0].remove();
+          }
+        },
+        grid: [64, 64],
+        stop: (event, ui) => {
+          [...document.getElementsByClassName("drag-item ui-draggable")].filter(e => ![...e.classList].includes("outside-drag-item") && e.attributes.nonce.value != event.target.attributes.nonce.value && e.style.left == $(event.target)[0].style.left && e.style.top == $(event.target)[0].style.top).forEach(e => e.remove());
+        }
+      });
+    }
+
+    function generate_tiles(grid) {
+      for (let x = 0; x < grid.length; x++) {
+        for (let y = 0; y < grid[x].length; y++) {
+          if (grid[y][x] != 0) {
+            let element = $(`<div class="drag-item ui-draggable" rel="${Object.keys(textures).find(key => textures[key] === grid[y][x] - 1)}" style="left: ${64 * x}px; top: ${64 * y}px;">
+  <img src="../textures/${Object.keys(textures).find(key => textures[key] === grid[y][x] - 1)}.png" title="">
+</div>`);
+            $(element).attr("nonce", Date.now() + Number((Math.random() * 1000).toFixed()));
+            $(".drop-target:first").append(element);
+            makeDraggable(element);
+          }
+        }
+      }
+    }
+
+    function generate_sprites(sprites) {
+      for (let i = 0; i < sprites.length; i++) {
+        let element = $(`<div class="drag-item ui-draggable sprite" rel="${Object.keys(textures).find(key => textures[key] === sprites[i].texture)}" style="left: ${64 * (sprites[i].y - 0.5)}px; top: ${64 * (sprites[i].x - 0.5)}px;">
+<img src="../textures/${Object.keys(textures).find(key => textures[key] === sprites[i].texture)}.png" title="">
+</div>`);
+        $(element).attr("nonce", Date.now() + Number((Math.random() * 1000).toFixed()));
+        $(".drop-target:first").append(element);
+        makeDraggable(element);
+      }
+    }
+
+
+    function map(x, in_min, in_max, out_min, out_max) {
+      return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+    }
+
+
+    function generate_enemies(_enemies) {
+      for (let i = 0; i < _enemies.length; i++) {
+        let angle = 360;
+
+        // Enemy rotation
+        angle += (-_enemies[i]["rotation"]) + 180;
+        while (angle < 0.0) {
+          angle += 360;
+        }
+        while (angle > 360.0) {
+          angle -= 360;
+        }
+
+        let rotation = (map(angle, 360, 0, 1, 8));
+        if (rotation >= 4) {
+          rotation += 1;
+          if (rotation > 5 && rotation < 6) {
+            rotation = 5;
+          } else if (Math.round(rotation) == 9) {
+            rotation--;
+          }
+        }
+        rotation = Math.round(rotation);
+        console.log("generated,", angle, rotation)
+        let element = $(`<div class="drag-item ui-draggable enemy" rel="${_enemies[i]["type"]}" rot="${rotation}" ang="${angle}" style="left: ${64 * (_enemies[i].y - 0.5)}px; top: ${64 * (_enemies[i].x - 0.5)}px;">
+          <img src="../textures//enemies/${_enemies[i]["type"]}/${_enemies[i]["type"]}_s_${rotation}.png" title="${_enemies[i]["type"]}" />
+</div>`);
+        $(element).attr("nonce", Date.now() + Number((Math.random() * 1000).toFixed()));
+        $(".drop-target:first").append(element);
+        makeDraggable(element);
+      }
+    }
+
+    function init() {
+      document.getElementById("size-select").value = GRID_SIZE;
+      document.getElementById("player-position").value = PLAYER_POSITION;
+      let circle = document.getElementById("circle");
+      circle.style.display = "flex";
+
+      circle.style.left = `${(192 + (64 * 4.5)) - 14}px`;
+      circle.style.top = `${(128 + (64 * 4.5)) - 14}px`;
+      circle.style.transform = `rotate(${PLAYER_ROTATION}deg)`;
+      document.getElementById("player-rotation").value = PLAYER_ROTATION;
+
+      [...document.getElementsByClassName("drag-item ui-draggable")].filter(e => ![...e.classList].includes("outside-drag-item")).forEach(e => e.remove());
+      [...document.getElementsByClassName("gridlines")].forEach(e => e.remove());
+      document.getElementsByClassName("drop-target")[0].style.width = `${64 * GRID_SIZE}px`;
+      document.getElementsByClassName("drop-target")[0].style.height = `${64 * GRID_SIZE}px`;
+
+      createGrid(64);
+    }
+
+    let snap_grid = "";
+    let grid_align = 64;
+
+    $("select").on('change', function () {
+      if (this.name == "floor-texture") {
+        FLOOR_TEXTURE = textures[this.value] + 1;
+      } else if (this.name == "ceiling-texture") {
+        CEILING_TEXTURE = textures[this.value] + 1;
+      } else if (this.name == "paint-tool") {
+        console.log(this.value);
+        if (this.value == "disabled") {
+          [...document.getElementsByClassName("drag-item ui-draggable")].forEach(e => $(e).draggable("enable"));
+          paint_enabled = false;
+        } else {
+          [...document.getElementsByClassName("drag-item ui-draggable")].forEach(e => $(e).draggable("disable"));
+          painted = get_grid();
+          paint_tool = textures[this.value];
+          paint_enabled = true;
+        }
+      } else if (this.name == "grid-align") {
+        grid_align = this.value;
+        $(".sprite").draggable({
+          snap: snap_grid,
+          grid: [grid_align, grid_align]
+        });
+      }
+    });
+
+    $("input").on("change", function () {
+      console.log(this.name, this.checked);
+      if (this.name == "snap-toggle") {
+        if (this.checked) {
+          snap_grid = ".gridlines";
+        } else {
+          snap_grid = "";
+        }
+        console.log(snap_grid);
+        $(".sprite").draggable({
+          snap: snap_grid,
+          grid: [grid_align, grid_align]
+        });
+      }
+    });
+
+
+    $("#file-input").change(function () {
+      let file = document.querySelector("#file-input").files[0];
+      let reader = new FileReader();
+      reader.addEventListener('load', function (e) {
+        let text = e.target.result;
+        let obj = JSON.parse(text);
+        GRID_SIZE = Number(obj.grid.length);
+        PLAYER_ROTATION = obj.player_position;
+        PLAYER_ROTATION = Number(obj.player_rotation);
+        FLOOR_TEXTURE = obj.floor_texture;
+        CEILING_TEXTURE = obj.ceiling_texture;
+
+        init();
+        generate_tiles(obj.grid);
+        generate_sprites(obj.sprites);
+        generate_enemies(obj.enemies);
+      });
+      reader.readAsText(file);
+    });
+
+
+    $("form").submit(function (event) {
+      // Prevent the page from auto-navigating on form submit
+      event.preventDefault();
+      if (event.target.name == "download-form") {
+        let data = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify({
+          grid: get_grid(),
+          sprites: get_sprites(),
+          enemies: get_enemies(),
+          player_position: PLAYER_POSITION,
+          player_rotation: Number(PLAYER_ROTATION),
+          floor_texture: Number(FLOOR_TEXTURE),
+          ceiling_texture: Number(CEILING_TEXTURE),
+          direction_x: (DIRECTION_X * Math.cos(-(PLAYER_ROTATION * (Math.PI / 180))) - DIRECTION_Y * Math.sin(-(PLAYER_ROTATION * (Math.PI / 180)))).toFixed(100),
+          direction_y: (DIRECTION_X * Math.sin(-(PLAYER_ROTATION * (Math.PI / 180))) + DIRECTION_Y * Math.cos(-(PLAYER_ROTATION * (Math.PI / 180)))).toFixed(100),
+          plane_x: (PLANE_X * Math.cos(-(PLAYER_ROTATION * (Math.PI / 180))) - PLANE_Y * Math.sin(-(PLAYER_ROTATION * (Math.PI / 180)))).toFixed(100),
+          plane_y: (PLANE_X * Math.sin(-(PLAYER_ROTATION * (Math.PI / 180))) + PLANE_Y * Math.cos(-(PLAYER_ROTATION * (Math.PI / 180)))).toFixed(100)
+        }));
+        console.log((PLANE_X * Math.sin(-(PLAYER_ROTATION * (Math.PI / 180))) + PLANE_Y * Math.cos(-(PLAYER_ROTATION * (Math.PI / 180)))).toFixed(100));
+        var dlAnchorElem = document.getElementById('downloadAnchorElem');
+        dlAnchorElem.setAttribute("href", data);
+        dlAnchorElem.setAttribute("download", "map.json");
+        dlAnchorElem.click();
+      } else if (event.target.name == "upload-form") {
+        document.getElementById("file-input").click();
+      } else if (event.target.name == "size-select-form") {
+        if (event.target.children[1].value != "") {
+          [...document.getElementsByClassName("drag-item ui-draggable")].filter(e => ![...e.classList].includes("outside-drag-item")).filter(e => e.offsetLeft >= 64 * event.target.children[1].value || e.offsetTop >= 64 * event.target.children[1].value).forEach(e => e.remove());
+          [...document.getElementsByClassName("gridlines")].forEach(e => e.remove());
+
+          document.getElementsByClassName("drop-target")[0].style.width = `${64 * event.target.children[1].value}px`;
+          document.getElementsByClassName("drop-target")[0].style.height = `${64 * event.target.children[1].value}px`;
+          createGrid(64);
+
+          GRID_SIZE = Number(event.target.children[1].value);
+        }
+      } else if (event.target.name == "player-position-form") {
+        let values = event.target.children[1].value.split(",");
+        if (values.length == 2 && values.every(e => /^(\d*\.?\d*)$/.test(e))) {
+          let circle = document.getElementById("circle");
+          circle.style.display = "flex";
+
+          circle.style.left = `${(192 + (64 * values[0])) - 14}px`;
+          circle.style.top = `${(128 + (64 * values[1])) - 14}px`;
+          PLAYER_POSITION = values;
+        } else {
+          alert("Value needs to be decimal/float with one comma.\nExamples: 1.5,1.5 | 2,5 | 2,5.5")
+        }
+      } else if (event.target.name == "player-rotation-form") {
+        let value = event.target.children[1].value;
+        let failed = false;
+        console.log(/^(\d*\.?\d*)$/.test(value), value >= 0 && value <= 360);
+        if (/^(\d*\.?\d*)$/.test(value)) {
+          if (value >= 0 && value <= 360) {
+            let circle = document.getElementById("circle");
+            circle.style.display = "flex";
+
+            circle.style.transform = `rotate(${value}deg)`;
+            PLAYER_ROTATION = Number(value);
+          } else {
+            failed = true;
+          }
+        } else {
+          failed = true;
+        }
+        if (failed) {
+          alert("Value needs to be decimal/float within range 0-360.\nExamples: 0 | 90 | 45.5 | 360")
+        }
+      }
+    });
+
+
+    let offset = -64;
+    Object.keys(textures).forEach(texture => {
+      // Populate drag-items
+      document.getElementById("drag-items").innerHTML += `<div class="outside-drag-item drag-item ${sprites.includes(textures[texture]) ? "sprite" : ""}" rel="${texture}" style="left:${(offset += 64) + 1}px;top:1px;">
+      <img src="../textures/${texture}.png" title="${texture.capitalize()}" />
+    </div>`;
+      // Populate floor-texture
+      document.getElementById("floor-texture").innerHTML += `<option value="${texture}" ${textures[texture] == FLOOR_TEXTURE ? "selected='selected'" : ""}>${texture.capitalize()}</option>`;
+      // Populate ceiling-texture
+      document.getElementById("ceiling-texture").innerHTML += `<option value="${texture}" ${textures[texture] == CEILING_TEXTURE ? "selected='selected'" : ""}>${texture.capitalize()}</option>`;
+      // Populate paint-tool
+      document.getElementById("paint-tool").innerHTML += `<option value="${texture}">${texture.capitalize()}</option>`;
+    });
+
+    offset += 64;
+
+    enemies.forEach(enemy => {
+      document.getElementById("drag-items").innerHTML += `<div class="outside-drag-item drag-item enemy" rel="${enemy}" rot="1" ang="180" style="left:${(offset += 64) + 1}px;top:1px;">
+      <img src="../textures//enemies/${enemy}/${enemy}_s_1.png" title="${enemy}" />
+    </div>`;
+    });
+
+    $(function () {
+      $(document).tooltip();
+      $(".drag-item").draggable({
+        snap: '.gridlines',
+        grid: [64, 64],
+      });
+      $(".outside-drag-item").draggable({
+        snap: '.gridlines',
+        revert: "invalid",
+        helper: "clone",
+        appendTo: ".drop-target",
+      });
+      $(".drop-target").droppable({
+        accept: ".drag-item",
+        activeClass: "ui-state-default",
+        hoverClass: "ui-state-hover",
+        drop: function (event, ui) {
+          if (ui.draggable.hasClass("outside-drag-item")) {
+            var $item = $(ui.helper).clone();
+            $item.removeClass("outside-drag-item");
+            $item.attr("nonce", Date.now() + Number((Math.random() * 1000).toFixed()));
+            [...document.getElementsByClassName("drag-item ui-draggable")].filter(e => ![...e.classList].includes("outside-drag-item") && e.offsetLeft == $(event.target).children().last()[0].offsetLeft && e.offsetTop == $(event.target).children().last()[0].offsetTop).forEach(e => e.remove());
+            $(this).append($item);
+            makeDraggable($item);
+          }
+        }
+      });
+    });
+
+    function createGrid(size) {
+      var i,
+        sel = $('.drop-target'),
+        height = sel.height(),
+        width = sel.width(),
+        ratioW = Math.floor(width / size),
+        ratioH = Math.floor(height / size);
+
+      for (i = 0; i <= ratioW; i++) { // vertical grid lines
+        $('<div />').css({
+          'top': 0,
+          'left': i * size,
+          'width': 1,
+          'height': height
+        })
+          .addClass('gridlines')
+          .appendTo(sel);
+      }
+
+      for (i = 0; i <= ratioH; i++) { // horizontal grid lines
+        $('<div />').css({
+          'top': i * size,
+          'left': 0,
+          'width': width,
+          'height': 1
+        })
+          .addClass('gridlines')
+          .appendTo(sel);
+      }
+
+      $('.gridlines').show();
+    }
+
+    init();
+  </script>
+
+
+
+</body>
+
+</html>
