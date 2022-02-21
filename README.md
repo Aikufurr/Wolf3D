@@ -6,14 +6,14 @@ Wolf3D is a simple Wolfenstein 3D inspired project game written in C++ using the
 
 ### Use [git](https://git-scm.com/) to clone the repository
 ```bash
-git clone https://github.com/Aikufurr/XXXX.git
+git clone https://github.com/Aikufurr/Wolf3D.git
 ```
 ### Install dependencies
 
 #### [Arch Linux](https://archlinux.org/) using [pacman](https://wiki.archlinux.org/title/pacman):
 ```bash
 # Update, GCC/G++, SDL2 + {image, mixer, tff}
-sudo pacman -Syu gcc sdl2{,_{image,mixer,ttf}}
+sudo pacman -Syu gcc sdl2{,_{image,mixer,ttf}} --needed
 ```
 #### [Ubuntu](https://ubuntu.com/) using [apt](https://help.ubuntu.com/community/AptGet/Howto):
 ```bash
@@ -81,9 +81,9 @@ g++ *.o -o bin/debug/main -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer
 ---
 
 ## Contributing
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+Pull requests are welcome.
 
-Please make sure to update tests as appropriate.
+Please make sure to test any changes you made before making a PR.
 
 ## License
 [GNU General Public License v3.0](https://choosealicense.com/licenses/gpl-3.0/)
