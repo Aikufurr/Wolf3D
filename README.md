@@ -8,7 +8,7 @@ Wolf3D is a simple Wolfenstein 3D inspired project game written in C++ using the
 
 ## Build from source
 
-Doxygen can be found at [https://aikufurr.github.io/Wolf3DDoxygen](https://aikufurr.github.io/Wolf3DDoxygen/hierarchy.html)
+Doxygen can be found at [https://aikufurr.github.io/Wolf3DDoxygen](https://aikufurr.github.io/Wolf3DDoxygen/hierarchy.html) 
 
 ### Use [git](https://git-scm.com/) to clone the repository
 ```bash
