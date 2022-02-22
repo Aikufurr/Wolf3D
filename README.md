@@ -2,6 +2,10 @@
 
 Wolf3D is a simple Wolfenstein 3D inspired project game written in C++ using the SDL2 framework for rendering the window.
 
+![View facing map](./screenshots/1.png)
+
+![Shooting](./screenshots/2.png)
+
 ## Build from source
 
 ### Use [git](https://git-scm.com/) to clone the repository
