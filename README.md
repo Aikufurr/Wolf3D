@@ -63,7 +63,7 @@ vcpkg install sdl2 sdl2-image sdl2-mixer sdl2-net sdl2-ttf
 vcpkg install --target x64-windows sdl2 sdl2-image sdl2-mixer sdl2-net sdl2-ttf
 ```
 
-
+---
 
 ### Compile and run
 
